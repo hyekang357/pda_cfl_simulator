@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <opaqueInsets>
+        <Insets />
+    </opaqueInsets>
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar>
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete" />
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <HBox style="-fx-border-style: none none solid none; -fx-border-width: 1; -fx-border-color: #d2d2d2;">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="PDA/CFL Simulator" textAlignment="CENTER">
+                            <font>
+                                <Font name="Baghdad Regular" size="36.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </VBox>
+    </top>
+    <left>
+        <VBox prefHeight="707.0" prefWidth="332.0" style="-fx-border-style: none, solid, none, none; -fx-border-color: #d2d2d2; -fx-border-width: 1;" BorderPane.alignment="CENTER">
+            <children>
+                <HBox style="-fx-border-color: #d2d2d2; -fx-border-style: none none solid none; -fx-border-width: 1; -fx-background-color: #e5e5e5;">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Input">
+                            <font>
+                                <Font name="Baghdad Regular" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <VBox prefHeight="672.0" prefWidth="0.0">
+                    <children>
+                        <Label text="${'Instructions:\n1. Type input\n2. Click on Test\n3. Click Next'}">
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                        <TextArea fx:id="TextAreaInput" prefHeight="200.0" prefWidth="298.0">
+                            <padding>
+                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </VBox.margin></TextArea>
+                        <Button mnemonicParsing="false" onAction="#drawTest1" text="Test 1">
+                            <VBox.margin>
+                                <Insets left="15.0" top="15.0" />
+                            </VBox.margin></Button>
+                        <Button mnemonicParsing="false" onAction="#drawTest2" text="Test 2">
+                            <VBox.margin>
+                                <Insets left="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#drawTest3" text="Test 3">
+                            <VBox.margin>
+                                <Insets left="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#clearCanvas" text=" Clear ">
+                            <VBox.margin>
+                                <Insets left="15.0" top="15.0" />
+                            </VBox.margin>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </VBox>
+    </left>
+    <center>
+        <VBox fx:id="VBoxForCanvas" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="40.0" />
+            </BorderPane.margin>
+            <children>
+                <Canvas fx:id="myCanvas" height="483.0" width="918.0" />
+                <HBox style="-fx-border-color: #d2d2d2; -fx-border-style: solid none solid none; -fx-border-width: 1; -fx-background-color: #e5e5e5;">
+                    <children>
+                        <Region prefWidth="20.0" />
+                        <Label text="Output">
+                            <font>
+                                <Font name="Baghdad Regular" size="18.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                    </children>
+                </HBox>
+                <TextArea fx:id="TextAreaOutput" editable="false" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="40.0" top="15.0" />
+                    </VBox.margin>
+                </TextArea>
+                <HBox>
+                    <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#clickNext" text="Next">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets right="40.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
