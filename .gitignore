@@ -1,4 +1,5 @@
 # mac stuff
 .DS_Store
-out/
-.idea/
+/out
+/.idea
+pda_cfl_simulator.iml
