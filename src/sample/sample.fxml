@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
@@ -113,7 +114,15 @@
                 <Insets bottom="40.0" />
             </BorderPane.margin>
             <children>
-                <Canvas fx:id="myCanvas" height="483.0" width="918.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                      <Canvas fx:id="myCanvas" height="483.0" width="818.0" />
+                  <TextArea fx:id="TextAreaStack" prefHeight="483.0" prefWidth="100.0">
+                     <HBox.margin>
+                        <Insets top="30.0" bottom="30.0" />
+                     </HBox.margin></TextArea>
+               </children>
+            </HBox>
                 <HBox style="-fx-border-color: #d2d2d2; -fx-border-style: solid none solid none; -fx-border-width: 1; -fx-background-color: #e5e5e5;">
                     <children>
                         <Region prefWidth="20.0" />

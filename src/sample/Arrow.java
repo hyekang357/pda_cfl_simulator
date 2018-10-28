@@ -6,6 +6,10 @@ public class Arrow {
 
     private int x1, x2, y1, y2;
     private String text;
+    private String input_text;
+    private String pop_text;
+    private String push_text;
+    private int current_index;
 
     private double[] x_points, y_points;
     private final int num_points = 3;
@@ -49,8 +53,12 @@ public class Arrow {
             this.set_y_points_line(this.y2);
         }
         this.text = text;
+        this.input_text = "";
+        this.pop_text = "";
+        this.push_text = "";
         this.from_state = from_state;
         this.to_state = to_state;
+        setInputPopPushText();
     }
 
     public Arrow(boolean arc_arrow, int x1, int y1, State from_state, String text){
@@ -66,9 +74,28 @@ public class Arrow {
             this.set_y_points_line(this.y1);
         }
         this.text = text;
-
+        this.input_text = "";
+        this.pop_text = "";
+        this.push_text = "";
         this.from_state = from_state;
         this.to_state = from_state;
+        setInputPopPushText();
+    }
+
+    private void setInputPopPushText() {
+        String text_split[]= this.text.split("\n");
+        for (String line: text_split){
+            String line_split[] = line.split("/");
+            for (int i = 0; i < 3; i++){
+                if (i == 0) {
+                    this.input_text += line_split[i];
+                } else if (i == 1) {
+                    this.pop_text += line_split[i];
+                } else if (i == 2) {
+                    this.push_text += line_split[i];
+                }
+            }
+        }
     }
 
     private void setArrowDirection (int x1, int y1, int x2, int y2){
@@ -148,6 +175,18 @@ public class Arrow {
         return this.text;
     }
 
+    public String get_input_text() {
+        return this.input_text;
+    }
+
+    public String get_pop_text() {
+        return this.pop_text;
+    }
+
+    public String get_push_text() {
+        return this.push_text;
+    }
+
     public State get_from_state() {
         return this.from_state;
     }
@@ -160,4 +199,34 @@ public class Arrow {
         return this.arc_arrow;
     }
 
+    public void set_current_index(int c) {
+        this.current_index = c;
+    }
+
+    public int get_current_index() {
+        return this.current_index;
+    }
+
+    public String get_text_at_current() {
+        String text_split[]= this.text.split("\n");
+        return text_split[this.current_index];
+    }
+
+    public String get_text_to_pop() {
+        if (!this.get_text_at_current().isEmpty()) {
+            String current_split[] = this.get_text_at_current().split("/");
+            return current_split[1];
+        } else {
+            return "E";
+        }
+    }
+
+    public String get_text_to_push() {
+        if (!this.get_text_at_current().isEmpty()) {
+            String current_split[] = this.get_text_at_current().split("/");
+            return current_split[2];
+        } else {
+            return "E";
+        }
+    }
 }
