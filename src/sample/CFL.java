@@ -6,19 +6,27 @@ public class CFL {
 
 	String input;
 	ArrayList<String> combinations;
+	int evalIndex = 0;
 
-	public CFL(String input) {
+	public CFL(String input, int origLen) {
 		this.input = input;
 
 		char[] tokens = split();
-		//Build combinations like RSR, ASA etc..
-		combinations = getCombinations(tokens);
-		
-		//Build combination like R, A, C, E
+		Boolean even = false;
+		if ((origLen % 2) == 0) {
+			even = true;
+			// System.out.println("even " + tokens.length);
+		} else {
+			// System.out.println("odd");
+		}
+		// Build combinations like RSR, ASA etc..
+		combinations = getCombinations(tokens, even);
+
+		// Build combination like R, A, C, E
 		for (int i = 0; i < tokens.length; i++) {
 			combinations.add(String.valueOf(tokens[i]));
 		}
-		
+
 		combinations.add("E");
 	}
 
@@ -26,19 +34,97 @@ public class CFL {
 		return combinations;
 	}
 
-	private char[] split() {
+	public String evalNext() {
+		if (evalIndex == -1) {
+			return "";
+		}
+
+		Boolean oddterminate = false;
+		Boolean eventerminate = false;
+		if (evalIndex <= combinations.size()) {
+			if (evalIndex == 0) {
+				return "Step 1" + " : " + combinations.get(evalIndex++);
+			} else {
+				StringBuilder ret = new StringBuilder();
+				for (int i = 0; i <= evalIndex; ++i) {
+					if (combinations.get(i).length() == 1) {
+						eventerminate = true;
+						System.out.println("terminate");
+						break;
+					}
+
+					ret.append(combinations.get(i).substring(0, 1));
+					if (combinations.get(i).substring(1, 2).compareTo("*") == 0) {
+						oddterminate = true;
+						System.out.println("terminate");
+						break;
+					}
+				}
+				evalIndex++;	
+				String result = "";
+				if (oddterminate) {
+					result = "Output" + " : ";
+					evalIndex = -1;
+					result += ret + "" + ret.replace(ret.length() - 1, ret.length(), "").reverse();
+				} else if (eventerminate) {
+					result = "Output" + " : ";
+					evalIndex = -1;
+					result += ret + "" + ret.reverse();
+				} else {					
+					result = "Step " + evalIndex + " : ";
+					result += ret + "S" + ret.reverse();
+				}
+				return result;
+			}
+		}
+		return "";
+	}
+
+	public char[] split() {
 		return input.toCharArray();
 	}
 
-	private ArrayList<String> getCombinations(char[] tokens) {
+	public void combinationUtil(ArrayList<String> out, char arr[], char data[], int start, int end, int index, int r) {
+		// Current combination is ready to be printed, print it
+		if (index == r) {
+			StringBuilder sl = new StringBuilder();
+			for (int j = 0; j < r; j++) {
+				// System.out.print(data[j] + " ");
+				sl.append(String.valueOf(data[j]));
+			}
+			out.add(sl.toString());
+			// System.out.println("");
+			return;
+		}
+
+		// replace index with all possible elements. The condition
+		// "end-i+1 >= r-index" makes sure that including one element
+		// at index will make a combination with remaining elements
+		// at remaining positions
+		for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
+			data[index] = arr[i];
+			combinationUtil(out, arr, data, i + 1, end, index + 1, r);
+		}
+	}
+
+	private ArrayList<String> getCombinations(char[] tokens, Boolean even) {
 		ArrayList<String> ar = new ArrayList<String>();
 		for (int i = 0; i < tokens.length; i++) {
-			StringBuilder sb = new StringBuilder();
-			sb.append(tokens[i]);
-			sb.append('S');
-			sb.append(tokens[i]);
-			String str = sb.toString();
-			ar.add(str);
+			if (i == tokens.length - 1 && even == false) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(tokens[i]);
+				sb.append('*');
+				String str = sb.toString();
+				ar.add(str);
+
+			} else {
+				StringBuilder sb = new StringBuilder();
+				sb.append(tokens[i]);
+				sb.append('S');
+				sb.append(tokens[i]);
+				String str = sb.toString();
+				ar.add(str);
+			}
 		}
 
 		return ar;
