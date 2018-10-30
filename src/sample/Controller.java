@@ -317,10 +317,60 @@ public class Controller {
 
     }
 
+    private void drawText(int x, int y, int size, String s) {
+        GC.setLineWidth(1.0);
+        GC.setFont(new Font("Arial", 24));
+        GC.fillText(s, x+(size*0.4), y+(size*0.55));
+        GC.setLineWidth(DWidth);
+    }
+    
     public void drawTest3() {
         System.out.println("Drawing Test 3...");
+        // Get input from input box
+        String input = TextAreaInput.getText();
+        
+        String uniqueChar = uniqueCharacters(input);
+        System.out.println("unique char: " + uniqueChar);
+
+        CFL cfl = new CFL(uniqueChar);
+        ArrayList<String> collection = cfl.getCombinations();
+        
+        // Testing
+        for(int i = 0; i < collection.size(); i++) {
+        	System.out.print(collection.get(i));
+        	System.out.print(" | ");
+        }        
+        
+        System.out.println();
+        
         // Initialize canvas
         initializeCanvas();
+        
+        int x = ((int) (GC.getCanvas().getWidth() / 2)) - 300;
+        int y = 0;
+        
+        // Testing
+        int cursorx = x;
+        int cursory = 208 + y;
+        
+        drawText(cursorx, cursory, 100, "S  ->");
+        cursorx += 60;
+        
+        for(int i = 0; i < collection.size(); i++) {
+        	int len = collection.get(i).length();
+        	drawText(cursorx, cursory, 100, collection.get(i));
+        	if (len == 3) {
+        		cursorx += 50;
+        	}
+        	else {
+        		cursorx += 30;
+        	}
+        	
+        	if (i != collection.size() - 1) {
+	        	drawText(cursorx, cursory, 100, "|");
+	        	cursorx += 20;        	
+        	}
+        }            
     }
 
     public void clearCanvas() {
