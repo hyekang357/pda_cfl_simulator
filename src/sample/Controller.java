@@ -19,6 +19,7 @@ public class Controller {
     final double DWidth = 5.0;
 
     public PDA Test;
+    private CFL cfl_test;
     Arrow PrevArrow;
 
     private void initializeCanvas() {
@@ -213,7 +214,7 @@ public class Controller {
     public void drawTest1() {
         System.out.println("Drawing Test 1...");
         // Initialize canvas
-        initializeCanvas();
+        clearCanvas();
 
         // Get input from input box
         String input = TextAreaInput.getText();
@@ -267,7 +268,7 @@ public class Controller {
     public void drawTest2() {
         System.out.println("Drawing Test 2...");
         // Initialize canvas
-        initializeCanvas();
+        clearCanvas();
 
         // Get input from input box
         String input = TextAreaInput.getText();
@@ -326,14 +327,18 @@ public class Controller {
     
     public void drawTest3() {
         System.out.println("Drawing Test 3...");
+        // Initialize canvas
+        clearCanvas();
+        
+        
         // Get input from input box
         String input = TextAreaInput.getText();
         
         String uniqueChar = uniqueCharacters(input);
         System.out.println("unique char: " + uniqueChar);
 
-        CFL cfl = new CFL(uniqueChar);
-        ArrayList<String> collection = cfl.getCombinations();
+        cfl_test = new CFL(uniqueChar, input.length());
+        ArrayList<String> collection = cfl_test.getCombinations();
         
         // Testing
         for(int i = 0; i < collection.size(); i++) {
@@ -342,9 +347,6 @@ public class Controller {
         }        
         
         System.out.println();
-        
-        // Initialize canvas
-        initializeCanvas();
         
         int x = ((int) (GC.getCanvas().getWidth() / 2)) - 300;
         int y = 0;
@@ -371,52 +373,81 @@ public class Controller {
 	        	cursorx += 20;        	
         	}
         }            
+        
+        
+        
+        /*
+        char[] arr = cfl.split(); 
+        for(int r = 1; r <= arr.length; ++r) {	        
+	        int n = arr.length; 
+	        
+	        // print output
+	        char data[]=new char[r];  
+	            
+	        ArrayList<String> out = new ArrayList<String>(); 
+	        cfl.combinationUtil(out, arr, data, 0, n-1, 0, r); 
+	        
+	        for(int i = 0; i < out.size(); i++) {
+	        	StringBuilder sl = new StringBuilder(out.get(i));
+	        	System.out.println("A = " + out.get(i) + "S" + sl.reverse());
+	        }
+        }
+        */
     }
 
     public void clearCanvas() {
         initializeCanvas();
+        cfl_test = null;
     }
 
     public void clickNext() {
         // if complete, highlight last state
         System.out.println("Next is clicked");
-        if (this.Test != null) {
-            if (this.Test.get_complete()) {
-                System.out.println("COMPLETE!!");
-                removeHighlightArrow();
-                State ending_state = this.Test.get_ending_state();
-                if (ending_state == null) {
-                    TextAreaOutput.setText("The input is rejected\n" + TextAreaOutput.getText());
-                } else {
-                    TextAreaOutput.setText("Ending state: " + ending_state.get_text() + "\n" + TextAreaOutput.getText());
-                    if (TextAreaStack.getText().equals("")) {
-                        TextAreaOutput.setText("The input is accepted\n" + TextAreaOutput.getText());
-                    } else {
-                        TextAreaOutput.setText("The stack is not empty -------- input is rejected\n" + TextAreaOutput.getText());
-                    }
-                    highlightState(ending_state);
-                }
-                TextAreaOutput.setText("Complete\n" + TextAreaOutput.getText());
-            }
-            // if not complete, highlight next arrow
-            else {
-                System.out.println("evaluating next");
-                Arrow next = this.Test.evaluate_next();
-                if (next != null) {
-                    removeHighlightArrow();
-                    highlightArrow(next);
-                    TextAreaOutput.setText(this.Test.get_output_text());
-                    popOrPushStack(next);
-                    this.Test.set_output_text(TextAreaOutput.getText());
-                    TextAreaOutput.setText(this.Test.get_output_text());
-                    this.PrevArrow = next;
-                } else {
-                    // at implicit reject state
-                    removeHighlightArrow();
-                    TextAreaOutput.setText(this.Test.get_output_text());
-                    this.PrevArrow = null;
-                }
-            }
+        if (cfl_test != null) {      
+        	String result = cfl_test.evalNext();
+        	if(result != null && !result.isEmpty()) {
+        		TextAreaOutput.appendText(result + "\n");
+        	}
+        }
+        else {        	       
+	        if (this.Test != null) {
+	            if (this.Test.get_complete()) {
+	                System.out.println("COMPLETE!!");
+	                removeHighlightArrow();
+	                State ending_state = this.Test.get_ending_state();
+	                if (ending_state == null) {
+	                    TextAreaOutput.setText("The input is rejected\n" + TextAreaOutput.getText());
+	                } else {
+	                    TextAreaOutput.setText("Ending state: " + ending_state.get_text() + "\n" + TextAreaOutput.getText());
+	                    if (TextAreaStack.getText().equals("")) {
+	                        TextAreaOutput.setText("The input is accepted\n" + TextAreaOutput.getText());
+	                    } else {
+	                        TextAreaOutput.setText("The stack is not empty -------- input is rejected\n" + TextAreaOutput.getText());
+	                    }
+	                    highlightState(ending_state);
+	                }
+	                TextAreaOutput.setText("Complete\n" + TextAreaOutput.getText());
+	            }
+	            // if not complete, highlight next arrow
+	            else {
+	                System.out.println("evaluating next");
+	                Arrow next = this.Test.evaluate_next();
+	                if (next != null) {
+	                    removeHighlightArrow();
+	                    highlightArrow(next);
+	                    TextAreaOutput.setText(this.Test.get_output_text());
+	                    popOrPushStack(next);
+	                    this.Test.set_output_text(TextAreaOutput.getText());
+	                    TextAreaOutput.setText(this.Test.get_output_text());
+	                    this.PrevArrow = next;
+	                } else {
+	                    // at implicit reject state
+	                    removeHighlightArrow();
+	                    TextAreaOutput.setText(this.Test.get_output_text());
+	                    this.PrevArrow = null;
+	                }
+	            }
+	        }
         }
     }
 }
