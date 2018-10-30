@@ -85,6 +85,8 @@ public class PDA {
             // Check if at transition state
             Arrow next_arrow = null;
             if (this.input_index == this.transition_index) {
+                System.out.println("Is at transition is true");
+                this.transition_index = -1;
                 // Get next arrow
                 next_arrow = get_next_arrow(this.curr_state, evaluating_input, true);
                 // if next_arrow is not null set curr_state, increment input_index, set_complete
@@ -106,6 +108,8 @@ public class PDA {
                     return null;
                 }
             } else {
+                System.out.println("Is at transition is false");
+
                 // Get next arrow
                 next_arrow = get_next_arrow(this.curr_state, evaluating_input, false);
                 // if next_arrow is not null set curr_state, increment input_index, set_complete
