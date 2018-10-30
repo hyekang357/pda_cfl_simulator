@@ -82,7 +82,7 @@ public class Controller {
         // write text
         GC.setLineWidth(1.0);
         GC.setFont(new Font("Arial", 24));
-        GC.fillText(a.get_text(), a.get_x1()+(size*0.95), a.get_y1()+(size*0.2));
+        GC.fillText(a.get_text(), a.get_x1()+(size*1.05), a.get_y1()+(size*0.2));
         GC.setLineWidth(DWidth);
     }
 
@@ -93,7 +93,7 @@ public class Controller {
             GC.setLineWidth(1.0);
             GC.setFont(new Font("Arial", 24));
             if(a.get_direction() == 'R')
-                GC.fillText(a.get_text(), (a.get_x1()+a.get_x2()-14)/2, ((a.get_y1()+a.get_y2())/2)-20);
+                GC.fillText(a.get_text(), (a.get_x1()+a.get_x2()-60)/2, ((a.get_y1()+a.get_y2())/2)+30);
             else if(a.get_direction() == 'U')
                 GC.fillText(a.get_text(), (((a.get_x1()+a.get_x2())/2)-30), (a.get_y1()+a.get_y2()+10)/2);
             else if(a.get_direction() == 'D')
@@ -271,13 +271,15 @@ public class Controller {
 
         // Get input from input box
         String input = TextAreaInput.getText();
-        System.out.println("Testing Test1 with given input: " + input);
+        System.out.println("Testing Test2 with given input: " + input);
         // Get the unique character set
         String uniqueChar = uniqueCharacters(input);
+
         System.out.println("unique char: " + uniqueChar);
 
         // Generate transition to itself arrow's label
-        String arcArrowLabel = "";
+        String arcArrowPushLabel = getArcArrowPushLabel(uniqueChar);
+        String arcArrowPopLabel = getArcArrowPopLabel(uniqueChar);
 
         // Generate transition to next state arrow's label
         String nextStateArrowLabel = getNextStateArrowLabel(uniqueChar);
@@ -290,10 +292,10 @@ public class Controller {
         State q1 = new State(true, 408 + x, 208 + y, 100, "q1");
 
         // Create arrows
-        Arrow a0 = new Arrow(false, 100 + x, 258 + y, 196 + x, 258 + y, q0);
-        Arrow a1 = new Arrow(true, 208 + x, 208 + y, q0, arcArrowLabel);
-        Arrow a2 = new Arrow(false, 318 + x, 258 + y, 396 + x, 258 + y, q0, q1, nextStateArrowLabel);
-        Arrow a3 = new Arrow(true, 408 + x, 208 + y, q1, arcArrowLabel);
+        Arrow a0 = new Arrow(false, 100 + x, 258 + y, 196 + x, 258 + y, q0);   //Starting Arrow
+        Arrow a1 = new Arrow(true, 208 + x, 208 + y, q0, "0/E/0\n"); // q0 self-arrow
+        Arrow a2 = new Arrow(false, 318 + x, 258 + y, 396 + x, 258 + y, q0, q1, "E/E/E\n1/0/E"); // q0 to q1 arrow
+        Arrow a3 = new Arrow(true, 408 + x, 208 + y, q1, "1/0/E\n"); //q1 self-arrow
 
         // Draw the objects
         drawArrowLine(a0);
@@ -342,7 +344,7 @@ public class Controller {
                     if (TextAreaStack.getText().equals("")) {
                         TextAreaOutput.setText("The input is accepted\n" + TextAreaOutput.getText());
                     } else {
-                        TextAreaOutput.setText("The stack is not empty -------- input is rejected\n" + TextAreaOutput.getText());
+                        TextAreaOutput.setText("T`he stack is not empty -------- input is rejected\n" + TextAreaOutput.getText());
                     }
                     highlightState(ending_state);
                 }
