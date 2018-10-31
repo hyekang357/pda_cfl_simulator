@@ -337,7 +337,7 @@ public class Controller {
         String uniqueChar = uniqueCharacters(input);
         System.out.println("unique char: " + uniqueChar);
 
-        cfl_test = new CFL(uniqueChar, input.length());
+        cfl_test = new CFL(uniqueChar, input);
         ArrayList<String> collection = cfl_test.getCombinations();
         
         // Testing
