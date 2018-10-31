@@ -74,11 +74,11 @@ public class PDA {
             this.curr_state = starting_arrow.get_to_state();
             System.out.println("Current state is set to: " + this.curr_state.get_text());
             // set complete
-            this.complete = check_complete(this.input, this.input_index);
+            // this.complete = check_complete(this.input, this.input_index);
             this.input_index++;
             this.output_text = "Starting at state q0\n";
             return starting_arrow;
-        } else if (this.curr_state != null && !this.complete) {
+        } else if (this.curr_state != null && !this.complete && !this.input.equals("")) {
             // Get input at index
             String evaluating_input = Character.toString(this.input.charAt(this.input_index));
             System.out.println("Evaluating input: " + evaluating_input);
@@ -126,6 +126,20 @@ public class PDA {
                     this.output_text = "Evaluating input: " + evaluating_input + " --------------- Move to implicit reject state\n" + this.output_text;
                     return null;
                 }
+            }
+        } else if (this.curr_state != null && !this.complete && this.input.equals("")) {
+            // transition to next state
+            System.out.println("Input is empty and transitioning to next state");
+            Arrow next_arrow = get_next_arrow(this.curr_state, "E", true);
+            if (next_arrow != null) {
+                this.curr_state = next_arrow.get_to_state();
+                this.output_text = "Evaluating input: E --------------- Move to state: " + this.curr_state.get_text() + "\n" + this.output_text;
+                // set complete
+                this.complete = true;
+                return next_arrow;
+            } else {
+                // error
+                return null;
             }
         } else {
             return null;

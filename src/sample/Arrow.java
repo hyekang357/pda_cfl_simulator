@@ -85,7 +85,7 @@ public class Arrow {
     private void setInputPopPushText() {
         String text_split[]= this.text.split("\n");
         for (String line: text_split){
-            String line_split[] = line.split("/");
+            String line_split[] = line.split(  "/");
             for (int i = 0; i < 3; i++){
                 if (i == 0) {
                     this.input_text += line_split[i];
